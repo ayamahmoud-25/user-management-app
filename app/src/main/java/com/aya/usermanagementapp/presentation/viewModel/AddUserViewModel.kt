@@ -40,9 +40,44 @@ class AddUserViewModel(
     fun saveUser() {
         viewModelScope.launch {
 
+            if (_uiState.value.name.isBlank()) {
+                _event.emit(
+                    AddUserUiEvent.ShowError("Name is required")
+                )
+                return@launch
+            }
+            if (_uiState.value.age.isBlank()) {
+                _event.emit(
+                    AddUserUiEvent.ShowError("Age is required")
+                )
+                return@launch
+            }
+
+            if (_uiState.value.job.isBlank()) {
+                _event.emit(
+                    AddUserUiEvent.ShowError("Job is required")
+                )
+                return@launch
+            }
+
+            if (_uiState.value.gender.isBlank()) {
+                _event.emit(
+                    AddUserUiEvent.ShowError("Gender is required")
+                )
+                return@launch
+            }
+
+            val age = _uiState.value.age.toIntOrNull()
+            if (age == null) {
+                _event.emit(
+                    AddUserUiEvent.ShowError("Age must be a number")
+                )
+                return@launch
+            }
+
             val user = UserEntity(
                 name = _uiState.value.name,
-                age = _uiState.value.age,
+                age = age,
                 jobTitle = _uiState.value.job,
                 gender = _uiState.value.gender
             )

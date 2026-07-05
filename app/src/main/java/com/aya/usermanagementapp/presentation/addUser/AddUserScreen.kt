@@ -11,9 +11,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import com.aya.usermanagementapp.presentation.viewModel.AddUserViewModel
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 @Composable
 fun AddUserScreen(
     viewModel: AddUserViewModel,
@@ -21,6 +26,10 @@ fun AddUserScreen(
 
 ) {
     val state = viewModel.uiState.collectAsState().value
+
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
@@ -33,12 +42,18 @@ fun AddUserScreen(
                 }
 
                 is AddUserUiEvent.ShowError -> {
-                    // show error
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
                 }
             }
         }
     }
-
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) { paddingValues ->
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,7 +120,7 @@ fun AddUserScreen(
             Text("Save")
         }
 
-    }
+    }}
 }
 
 
