@@ -16,8 +16,7 @@ class UserViewModel(
     private val _users = MutableStateFlow<List<UserEntity>>(emptyList())
     val users = _users.asStateFlow()
 
-    private val _uiState = MutableStateFlow(AddUserUiState())
-    val uiState = _uiState.asStateFlow()
+
 
     init {
         getUsers()
