@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.aya.usermanagementapp.di.AppContainer
 import com.aya.usermanagementapp.navigation.NavGraph
 import com.aya.usermanagementapp.presentation.viewModel.AddUserViewModel
+import com.aya.usermanagementapp.presentation.viewModel.UsersViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -23,9 +24,9 @@ class MainActivity : ComponentActivity() {
 
             val container = AppContainer(applicationContext)
 
-            val viewModel = AddUserViewModel(
-                container.repository
-            )
+            val addUserViewModel = AddUserViewModel(container.repository)
+
+            val usersViewModel = UsersViewModel(container.repository)
 
             Surface(
                 color = MaterialTheme.colorScheme.background
@@ -33,8 +34,11 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                NavGraph(navController,viewModel)
-
+                NavGraph(
+                    navController = navController,
+                    addUserViewModel = addUserViewModel,
+                    usersViewModel = usersViewModel
+                )
             }
         }
     }

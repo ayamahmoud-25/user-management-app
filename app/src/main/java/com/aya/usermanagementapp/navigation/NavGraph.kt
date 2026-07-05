@@ -5,13 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.aya.usermanagementapp.presentation.addUser.AddUserScreen
+import com.aya.usermanagementapp.presentation.users.UsersScreen
 import com.aya.usermanagementapp.presentation.viewModel.AddUserViewModel
+import com.aya.usermanagementapp.presentation.viewModel.UsersViewModel
 
 @Composable
-    fun NavGraph(
-        navController: NavHostController,
-        viewModel: AddUserViewModel
-
+fun NavGraph(
+    navController: NavHostController,
+    addUserViewModel: AddUserViewModel,
+    usersViewModel: UsersViewModel
 ) {
         NavHost(
             navController = navController,
@@ -20,7 +22,7 @@ import com.aya.usermanagementapp.presentation.viewModel.AddUserViewModel
 
             composable(Screen.AddUsers.route) {
                 AddUserScreen(
-                    viewModel = viewModel,
+                    viewModel = addUserViewModel,
                     onNavigateToUsers = {
                         navController.navigate(Screen.Users.route)
                     }
@@ -28,7 +30,10 @@ import com.aya.usermanagementapp.presentation.viewModel.AddUserViewModel
             }
 
             composable(Screen.Users.route) {
-                //UsersScreen()
+
+                UsersScreen(
+                    viewModel = usersViewModel
+                )
             }
         }
 

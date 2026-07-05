@@ -2,20 +2,18 @@ package com.aya.usermanagementapp.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aya.usermanagementapp.data.local.entity.UserEntity
 import com.aya.usermanagementapp.data.repository.UserRepository
-import com.aya.usermanagementapp.presentation.addUser.AddUserUiState
+import com.aya.usermanagementapp.presentation.users.UsersUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class UserViewModel(
+class UsersViewModel(
     private val repository: UserRepository
 ) : ViewModel(){
 
-    private val _users = MutableStateFlow<List<UserEntity>>(emptyList())
-    val users = _users.asStateFlow()
-
+    private val _uiState = MutableStateFlow(UsersUiState())
+    val uiState = _uiState.asStateFlow()
 
 
     init {
@@ -25,14 +23,10 @@ class UserViewModel(
     private fun getUsers() {
         viewModelScope.launch {
             repository.getAllUsers().collect {
-                _users.value = it
+                _uiState.value =
+                    _uiState.value.copy(users = it)
             }
         }
     }
 
-    fun insertUser(user: UserEntity) {
-        viewModelScope.launch {
-            repository.insertUser(user)
-        }
-    }
 }
